@@ -2,13 +2,26 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include <cstdlib>
-#include <ctime>
+#include <cstdlib>   // For randomizing
+#include <ctime>     // For randomizing
+#include <windows.h> // Terminal colors
 
 using namespace std;
 
-enum ColorPrint {black, white};
-enum NumberPrint{zero, one, two, three, four, five, six, seven, eight, nine};
+enum ColorPrint {red, yellow, green, blue};
+const int ColorPrint_len = 4;
+enum NumberPrint{zero, one, two, three, four, five, six, seven, eight, nine, plustwo, skip, reverse};
+const int NumberPrint_len = 13;
+// Deck cards
+const int NormalN = 2;
+const int DrawN = 2;
+const int ReverseN = 2;
+const int ZeroN = 1;
+
+const int ColorN = ZeroN + NormalN + DrawN + ReverseN + SkipN;
+
+const int SkipN = 2;
+const int WildsN = 4;
 
 class Card
 {
@@ -22,8 +35,8 @@ class Card
 void GiveRandomCard (vector<Card> &Hand)
 {
     Card tempCard;
-    int indexNumber = rand() % 10;
-    int indexColor = rand() % 2;
+    int indexNumber = rand() % NumberPrint_len;
+    int indexColor = rand() % ColorPrint_len;
     tempCard.Number = static_cast<NumberPrint>(indexNumber);
     tempCard.Color = static_cast<ColorPrint>(indexColor);
     Hand.push_back(tempCard);
@@ -38,14 +51,17 @@ void PutRandomCard(Card &Table)
 }
 
 // Display functions 
-void DisplayCard(vector<Card> PlayerHand)
+void DisplayCard(vector<Card> PlayerHand, int CardIndex)
 {
-    switch(PlayerHand[0].Color)
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    switch(PlayerHand[CardIndex].Color)
     {
-        case black: cout << "Black "; break;
-        case white: cout << "White "; break;
+        case red: SetConsoleTextAttribute(hConsole,FOREGROUND_RED); cout << "Red "; break;
+        case yellow: SetConsoleTextAttribute(hConsole,14); cout << "Yellow "; break;
+        case green: SetConsoleTextAttribute(hConsole,FOREGROUND_GREEN); cout << "Green "; break;
+        case blue: SetConsoleTextAttribute(hConsole,FOREGROUND_BLUE); cout << "Blue "; break;
     }
-    switch(PlayerHand[0].Number)
+    switch(PlayerHand[CardIndex].Number)
     {
         case zero : cout << "0" << endl; break;
         case one : cout << "1" << endl; break;
@@ -58,6 +74,7 @@ void DisplayCard(vector<Card> PlayerHand)
         case eight : cout << "8" << endl; break; 
         case nine : cout << "9" << endl; break;
     }
+    SetConsoleTextAttribute(hConsole,0);
 }
 
 int main() 
@@ -66,8 +83,14 @@ int main()
     vector<Card> PlayerHand;
     Card Table;
     PutRandomCard(Table);
-    GiveRandomCard(PlayerHand);
-    DisplayCard(PlayerHand);
+    for (int i = 0; i < 7; i++)
+    {
+        GiveRandomCard(PlayerHand);
+        DisplayCard(PlayerHand, i);
+    }
+
+
+
     // cout << "Card on the table: ";
     // switch(PlayerHand[0].Color)
     // {
