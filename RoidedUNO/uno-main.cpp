@@ -9,7 +9,7 @@
 
 using namespace std;
 
-enum ColorPrint {red, yellow, green, blue, wild};
+enum ColorPrint {red, yellow, green, blue, wilds};
 const int ColorPrint_len = 4;
 enum NumberPrint{zero, one, two, three, four, five, six, seven, eight, nine, plustwo, skip, reverse, wild, plusfour};
 const int NumberPrint_len = 13;
@@ -51,8 +51,10 @@ class DeckManager
                 maxCount[{color, skip}] = SkipN;
                 maxCount[{color, NumberPrint::reverse}] = ReverseN;
             }
-        for (auto &init : maxCount)
-            deckCount[init.first] = 0;
+            maxCount[{wilds, wild}] = WildsN;
+            maxCount[{wilds, plusfour}] = WildsN;
+            for (auto &init : maxCount)
+                deckCount[init.first] = 0;
         }
         bool canDraw (ColorPrint c, NumberPrint n)
         {
@@ -76,7 +78,31 @@ void GiveRandomCard (vector<Card> &Hand, DeckManager &Deck)
     else
         GiveRandomCard(Hand, Deck);
 }
-// void GiveRandomWildCard
+
+void GiveRandomWildCard (vector<Card> &Hand, DeckManager &Deck)
+{
+    Card tempWildCard;
+    int indexWild = rand() % 2; // 0 = wild, 1 = +4
+    tempWildCard.Color = wilds;
+    if (indexWild == 0 && Deck.canDraw(wilds, wild))
+    {
+        tempWildCard.Number = wild;
+        Hand.push_back(tempWildCard);
+        Deck.deckCount[{tempWildCard.Color, tempWildCard.Number}]++;
+    }
+    else if (indexWild == 1 && Deck.canDraw(wilds, plusfour))
+    {    
+        tempWildCard.Number = plusfour;
+        Hand.push_back(tempWildCard);
+        Deck.deckCount[{tempWildCard.Color, tempWildCard.Number}]++;
+    }
+    else
+    {
+        GiveRandomCard(Hand, Deck);
+        return;
+
+    }
+}
 
 void PutRandomCard(Card &Table)
 {
@@ -96,7 +122,11 @@ void DisplayCard(vector<Card> PlayerHand, int CardIndex)
         case yellow: SetConsoleTextAttribute(hConsole,14); cout << "Yellow "; break;
         case green: SetConsoleTextAttribute(hConsole,FOREGROUND_GREEN); cout << "Green "; break;
         case blue: SetConsoleTextAttribute(hConsole,FOREGROUND_BLUE); cout << "Blue "; break;
-    }
+        case wilds: SetConsoleTextAttribute(hConsole,FOREGROUND_RED); cout << "W" ;
+                   SetConsoleTextAttribute(hConsole,14); cout << "i" ;
+                   SetConsoleTextAttribute(hConsole,FOREGROUND_GREEN); cout << "l";
+                   SetConsoleTextAttribute(hConsole,FOREGROUND_BLUE); cout << "d "; break;
+    }            
     switch(PlayerHand[CardIndex].Number)
     {
         case zero : cout << "0" << endl; break;
@@ -112,6 +142,8 @@ void DisplayCard(vector<Card> PlayerHand, int CardIndex)
         case plustwo : cout << "+2" << endl; break;
         case skip : cout << "skip" << endl; break;
         case NumberPrint::reverse : cout << "reverse" << endl; break;
+        case wild : cout << "wild" << endl; break;
+        case plusfour : cout << "+4" << endl; break;
     }
     SetConsoleTextAttribute(hConsole,0);
 }
@@ -123,11 +155,19 @@ int main()
     DeckManager Deck;
     Card Table;
     PutRandomCard(Table);
-    for (int i = 0; i < 7; i++)
+    while (size(PlayerHand) < 110)
     {
-        GiveRandomCard(PlayerHand, Deck);
-        // randomize between random normal card and random wildcard
-        DisplayCard(PlayerHand, i);
+        int randN = rand() % 2;
+        if(randN == 1)
+        {
+            GiveRandomWildCard(PlayerHand, Deck);            
+            DisplayCard(PlayerHand, size(PlayerHand)-1);
+        }
+        else
+        {
+            GiveRandomCard(PlayerHand, Deck);
+            DisplayCard(PlayerHand, size(PlayerHand)-1);
+        }
     }
 
 
