@@ -10,9 +10,9 @@
 using namespace std;
 
 enum ColorPrint {red, yellow, green, blue, wilds};
-const int ColorPrint_len = 4;
+const int ColorPrint_len = 4; // Length without wilds
 enum NumberPrint{zero, one, two, three, four, five, six, seven, eight, nine, plustwo, skip, reverse, wild, plusfour};
-const int NumberPrint_len = 13;
+const int NumberPrint_len = 13; // Length without wilds
 
 // Deck cards
 const int NormalN = 2;
@@ -59,6 +59,26 @@ class DeckManager
         bool canDraw (ColorPrint c, NumberPrint n)
         {
             return deckCount[{c,n}] < maxCount[{c,n}];
+        }
+        int DeckCounter()
+        {
+            int count = 0;
+            for (int i = 0;  i < ColorPrint_len; i++)
+            {
+                ColorPrint color = static_cast<ColorPrint>(i);
+                for (int z = 0; z < NumberPrint_len; z++)
+                {
+                    NumberPrint number = static_cast<NumberPrint>(z);
+                    count = count + deckCount[{color,number}];           
+                }
+            }
+            ColorPrint color = wilds;
+            for (int w = 12; w < 15; w++)
+            {
+                NumberPrint number = static_cast<NumberPrint>(w);
+                count = count + deckCount[{color,number}];
+            }
+            return count;  
         }
 };
 
@@ -155,7 +175,7 @@ int main()
     DeckManager Deck;
     Card Table;
     PutRandomCard(Table);
-    while (size(PlayerHand) < 110)
+    while (size(PlayerHand) < 90)
     {
         int randN = rand() % 2;
         if(randN == 1)
@@ -169,6 +189,7 @@ int main()
             DisplayCard(PlayerHand, size(PlayerHand)-1);
         }
     }
+    cout << Deck.DeckCounter() << endl;
 
 
 
