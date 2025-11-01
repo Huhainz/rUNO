@@ -25,6 +25,15 @@ class Card
         string Display;
 };
 
+class Table
+{
+    public:
+        Card topCard;
+        Table();
+        bool CanPlace(Card topCard, Card PlacerHand);
+        void TakeEffect(Card &PlacerHand, Card &VictimHand, Card &TopCard);
+};
+
 class DeckManager 
 {
     public:
@@ -45,5 +54,6 @@ void GiveRandomWildCard (vector<Card> &Hand, DeckManager &Deck);
 void PutRandomCard(Card &Table);
 void DisplayCard(vector<Card> PlayerHand, int CardIndex);
 void GiveRandomCard(vector<Card> &Hand, DeckManager &Deck);
+
 
 #endif

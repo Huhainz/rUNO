@@ -1,9 +1,4 @@
-#define NOMINMAX
-#define _HAS_STD_BYTE 0
 #include <windows.h>
-
-#undef byte  // Just to be extra safe
-
 #include "uno-main.h"
 
 
@@ -75,6 +70,18 @@ int DeckManager::WildsCounter()
 int DeckManager::DeckCounter()
 {
     return NormalCardCounter() + WildsCounter();
+}
+
+Table::Table(){}
+
+bool Table::CanPlace(Card topCard, Card PlacerHand)
+{
+    return (topCard.Color == (wilds || PlacerHand.Color) || topCard.Number == PlacerHand.Number);
+}
+
+void Table::TakeEffect(Card &PlacerHand, Card &VictimHand, Card &TopCard)
+{
+    
 }
 
 
