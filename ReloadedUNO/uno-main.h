@@ -31,7 +31,7 @@ class Table
         Card topCard;
         Table();
         bool CanPlace(Card topCard, Card PlacerHand);
-        void TakeEffect(Card &PlacerHand, Card &VictimHand, Card &TopCard);
+        void TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard);
 };
 
 class DeckManager 

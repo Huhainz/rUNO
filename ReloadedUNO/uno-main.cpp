@@ -74,14 +74,48 @@ int DeckManager::DeckCounter()
 
 Table::Table(){}
 
-bool Table::CanPlace(Card topCard, Card PlacerHand)
+bool Table::CanPlace(Card topCard, Card PlacerCard)
 {
-    return (topCard.Color == (wilds || PlacerHand.Color) || topCard.Number == PlacerHand.Number);
+    return (topCard.Color == (wilds || PlacerCard.Color) || topCard.Number == PlacerCard.Number);
 }
 
-void Table::TakeEffect(Card &PlacerHand, Card &VictimHand, Card &TopCard)
+void Table::TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard)
 {
-    
+    TopCard = PlacerCard;
+    if (TopCard.Color == wilds)
+    {
+        bool ColorValid = false;
+        string wildcolor;
+        ColorPrint WildColor;
+        cout << "Choose a color: ";
+        while (ColorValid == false)
+        {
+            cin >> wildcolor;
+            if (wildcolor == "yellow")
+            {
+                WildColor = yellow;
+                ColorValid = true;
+            }
+            else if (wildcolor == "blue")
+            {
+                WildColor = blue;
+                ColorValid = true;
+            }
+            else if (wildcolor == "red")
+            {
+                WildColor = red;
+                ColorValid = true;
+            }
+            else if (wildcolor == "green")
+            {
+                WildColor = green;
+                ColorValid = true;
+            }
+            else
+                cout << "Color invalid." << endl << "Choose a color: ";
+        }
+    }
+
 }
 
 
