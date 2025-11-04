@@ -74,12 +74,22 @@ int DeckManager::DeckCounter()
 
 Table::Table(){}
 
-bool Table::CanPlace(Card topCard, Card PlacerCard)
+int Table::PlayCardReq()
 {
+    // Check if index is valid (MISSING)
+    int index;
+    cout << "Place a card: ";
+    cin >> index;
+    return index;
+}
+
+bool Table::CanPlace(Card topCard, Card PlacerCard, int index)
+{
+    // Instead of PlacerCard, use PlayerHand and use the index (MISSING)
     return (topCard.Color == (wilds || PlacerCard.Color) || topCard.Number == PlacerCard.Number);
 }
 
-void Table::TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard)
+void Table::TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck)
 {
     TopCard = PlacerCard;
     if (TopCard.Color == wilds)
@@ -114,7 +124,22 @@ void Table::TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard)
             else
                 cout << "Color invalid." << endl << "Choose a color: ";
         }
+        if (TopCard.Number == plusfour)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                GiveRandomCard(targetHand, Deck);
+            }
+        }
     }
+    else if(TopCard.Number == plustwo)
+    {
+        for (int y = 0; y < 2; y++)
+        {
+            GiveRandomCard(targetHand, Deck);
+        }
+    }
+
 
 }
 
