@@ -25,17 +25,6 @@ class Card
         string Display;
 };
 
-class Table
-{
-    public:
-        Card topCard;
-        Table();
-        int PlayCardReq(vector<Card> PlayerHand);
-        bool CanPlace(Card topCard, Card PlacerHand);
-        void TakeEffect(vector<Card>& PlacerHand, int index, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck);
-        void PlayCard(vector<Card> &PlayerHand, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck);
-};
-
 class DeckManager 
 {
     public:
@@ -47,6 +36,18 @@ class DeckManager
         int WildsCounter();
         int DeckCounter();
 };
+
+class Table
+{
+    public:
+        Card topCard;
+        Table();
+        int PlayCardReq(vector<Card> PlayerHand);
+        bool CanPlace(Card topCard, Card PlacerHand);
+        void TakeEffect(vector<Card> &PlacerHand, int index, vector<Card> &targetHand, Card &TopCard, DeckManager &Deck);
+        void PlayCard(vector<Card> &PlayerHand, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck);
+};
+
 
 
 // Give cards functions

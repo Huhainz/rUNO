@@ -79,7 +79,7 @@ int Table::PlayCardReq(vector<Card> PlayerHand)
     int index;
     cout << "Place a card: ";
     cin >> index;
-    while (index > (sizeof(PlayerHand) - 1))
+    while (index > (PlayerHand.size() - 1))
     {
         cout << "Index invalid." << endl << "Place a card: ";
         cin >> index;
@@ -89,10 +89,23 @@ int Table::PlayCardReq(vector<Card> PlayerHand)
 
 bool Table::CanPlace(Card topCard, Card PlacerCard)
 {
-    return (topCard.Color == (wilds || PlacerCard.Color) || topCard.Number == PlacerCard.Number);
+    if (topCard.Color == wilds)
+    {
+        return true;
+    }
+    else if (topCard.Color == PlacerCard.Color)
+    {
+        return true;
+    }
+    else if (topCard.Number == PlacerCard.Number)
+    {
+        return true;
+    }
+    else 
+        return false;
 }
 
-void Table::TakeEffect(vector<Card>& PlacerHand, int index, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck)
+void Table::TakeEffect(vector<Card> &PlacerHand, int index, vector<Card> &targetHand, Card &TopCard, DeckManager &Deck)
 {
     TopCard = PlacerHand[index];
     PlacerHand.erase(PlacerHand.begin() + index);
@@ -146,7 +159,7 @@ void Table::TakeEffect(vector<Card>& PlacerHand, int index, vector<Card>& target
     // Reverse, block and skip not added yet in singleplayer (MISSING)
 }
 
-void Table::PlayCard(vector<Card> &PlayerHand, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck)
+void Table::PlayCard(vector<Card> &PlayerHand, vector<Card> &targetHand, Card &TopCard, DeckManager &Deck)
 {
     int index;
     bool valid = false;
@@ -159,7 +172,7 @@ void Table::PlayCard(vector<Card> &PlayerHand, vector<Card>& targetHand, Card &T
             TakeEffect(PlayerHand, index, targetHand, TopCard, Deck);
         }
         else
-            cout << "Card can't be placed";
+            cout << "Card can't be placed" << endl;
     }
   
 }
