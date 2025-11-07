@@ -30,10 +30,10 @@ class Table
     public:
         Card topCard;
         Table();
-        int PlayCardReq();
-        bool CanPlace(Card topCard, Card PlacerHand, int index);
-        void PlayCard();
-        void TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck);
+        int PlayCardReq(vector<Card> PlayerHand);
+        bool CanPlace(Card topCard, Card PlacerHand);
+        void TakeEffect(vector<Card>& PlacerHand, int index, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck);
+        void PlayCard(vector<Card> &PlayerHand, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck);
 };
 
 class DeckManager 

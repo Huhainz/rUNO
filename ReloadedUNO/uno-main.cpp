@@ -74,24 +74,28 @@ int DeckManager::DeckCounter()
 
 Table::Table(){}
 
-int Table::PlayCardReq()
+int Table::PlayCardReq(vector<Card> PlayerHand)
 {
-    // Check if index is valid (MISSING)
     int index;
     cout << "Place a card: ";
     cin >> index;
+    while (index > (sizeof(PlayerHand) - 1))
+    {
+        cout << "Index invalid." << endl << "Place a card: ";
+        cin >> index;
+    }
     return index;
 }
 
-bool Table::CanPlace(Card topCard, Card PlacerCard, int index)
+bool Table::CanPlace(Card topCard, Card PlacerCard)
 {
-    // Instead of PlacerCard, use PlayerHand and use the index (MISSING)
     return (topCard.Color == (wilds || PlacerCard.Color) || topCard.Number == PlacerCard.Number);
 }
 
-void Table::TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck)
+void Table::TakeEffect(vector<Card>& PlacerHand, int index, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck)
 {
-    TopCard = PlacerCard;
+    TopCard = PlacerHand[index];
+    PlacerHand.erase(PlacerHand.begin() + index);
     if (TopCard.Color == wilds)
     {
         bool ColorValid = false;
@@ -139,10 +143,26 @@ void Table::TakeEffect(Card PlacerCard, vector<Card>& targetHand, Card &TopCard,
             GiveRandomCard(targetHand, Deck);
         }
     }
-
-
+    // Reverse, block and skip not added yet in singleplayer (MISSING)
 }
 
+void Table::PlayCard(vector<Card> &PlayerHand, vector<Card>& targetHand, Card &TopCard, DeckManager &Deck)
+{
+    int index;
+    bool valid = false;
+    while (valid == false)
+    {
+        index = PlayCardReq(PlayerHand);
+        valid = CanPlace(TopCard, PlayerHand[index]);
+        if (valid == true)
+        {
+            TakeEffect(PlayerHand, index, targetHand, TopCard, Deck);
+        }
+        else
+            cout << "Card can't be placed";
+    }
+  
+}
 
 // Give cards functions
 
