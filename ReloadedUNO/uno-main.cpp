@@ -3,19 +3,19 @@
 
 
 // Deck cards
-const int NormalN = 2;
+const int NormalN = 2 * 9;
 const int DrawN = 2;
 const int ReverseN = 2;
 const int ZeroN = 1;
 const int SkipN = 2;
 
 const int ColorN = ZeroN + NormalN + DrawN + ReverseN + SkipN;
-const int SumOfColor = ColorN * 13;
+const int SumOfColor = ColorN * 4;
 
 const int WildsN = 4;
-const int SumOfWilds = WildsN * 2;
+int SumOfWilds = WildsN * 2;
 
-const int Sum = SumOfColor + SumOfWilds;
+int Sum = SumOfColor + SumOfWilds;
 
 
 DeckManager::DeckManager()
@@ -70,6 +70,14 @@ int DeckManager::WildsCounter()
 int DeckManager::DeckCounter()
 {
     return NormalCardCounter() + WildsCounter();
+}
+
+void DeckManager::DeckReset()
+{
+    for (auto &kv : deckCount)
+        kv.second = 0;
+    cout << Sum << endl;
+    cout << "Deck reshuffled!" << endl;
 }
 
 Table::Table(){}
@@ -224,12 +232,14 @@ void GiveRandomWildCard (vector<Card> &Hand, DeckManager &Deck)
     }
 }
 
-void PutRandomCard(Card &Table)
+void PutRandomCard(Card &Table, DeckManager &Deck)
 {
-    int indexNumber = rand() % 10;
-    int indexColor = rand() % 2;
+    int indexNumber = rand() % NumberPrint_len;
+    // Only put normal cards first
+    int indexColor = rand() % 10;
     Table.Number = static_cast<NumberPrint>(indexNumber);
     Table.Color = static_cast<ColorPrint>(indexColor);
+    Deck.deckCount[{Table.Color, Table.Number}]++;
 }
 
 // Display functions 
@@ -270,13 +280,18 @@ void DisplayCard(vector<Card> PlayerHand, int CardIndex)
 
 void GiveRandomCard(vector<Card> &Hand, DeckManager &Deck)
 {
-        int randN = rand() % 2;
-        if(randN == 1)
-        {
-            GiveRandomWildCard(Hand, Deck);            
-        }
-        else
-        {
-            GiveRandomNormalCard(Hand, Deck);
-        }
+    if (Deck.DeckCounter() == Sum)
+    {
+        Deck.DeckReset();
+    }
+    // 10% to get a wildcard
+    int randN = rand() % 10;
+    if(randN == 1)
+    {
+        GiveRandomWildCard(Hand, Deck);            
+    }
+    else
+    {
+        GiveRandomNormalCard(Hand, Deck);
+    }
 }

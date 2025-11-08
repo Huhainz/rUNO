@@ -35,6 +35,7 @@ class DeckManager
         int NormalCardCounter();
         int WildsCounter();
         int DeckCounter();
+        void DeckReset();
 };
 
 class Table
@@ -54,7 +55,7 @@ class Table
 
 void GiveRandomNormalCard (vector<Card> &Hand, DeckManager &Deck);
 void GiveRandomWildCard (vector<Card> &Hand, DeckManager &Deck);
-void PutRandomCard(Card &Table);
+void PutRandomCard(Card &Table, DeckManager &Deck);
 void DisplayCard(vector<Card> PlayerHand, int CardIndex);
 void GiveRandomCard(vector<Card> &Hand, DeckManager &Deck);
 
