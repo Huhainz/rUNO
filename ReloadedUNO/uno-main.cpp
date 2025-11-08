@@ -82,6 +82,12 @@ void DeckManager::DeckReset()
 
 Table::Table(){}
 
+void Table::GiveInitialCards(vector<Card> &PlayerHand, DeckManager &Deck)
+{
+    for (int i = 0; i < 7; i++)
+        GiveRandomCard(PlayerHand, Deck);
+}
+
 int Table::PlayCardReq(vector<Card> PlayerHand)
 {
     int index;
@@ -234,19 +240,38 @@ void GiveRandomWildCard (vector<Card> &Hand, DeckManager &Deck)
 
 void PutRandomCard(Card &Table, DeckManager &Deck)
 {
-    int indexNumber = rand() % NumberPrint_len;
+    int indexNumber = rand() % 10;
     // Only put normal cards first
-    int indexColor = rand() % 10;
+    int indexColor = rand() % ColorPrint_len;
     Table.Number = static_cast<NumberPrint>(indexNumber);
     Table.Color = static_cast<ColorPrint>(indexColor);
     Deck.deckCount[{Table.Color, Table.Number}]++;
 }
 
+void GiveRandomCard(vector<Card> &Hand, DeckManager &Deck)
+{
+    if (Deck.DeckCounter() == Sum)
+    {
+        Deck.DeckReset();
+    }
+    // 10% to get a wildcard
+    int randN = rand() % 10;
+    if(randN == 1)
+    {
+        GiveRandomWildCard(Hand, Deck);            
+    }
+    else
+    {
+        GiveRandomNormalCard(Hand, Deck);
+    }
+}
+
 // Display functions 
-void DisplayCard(vector<Card> PlayerHand, int CardIndex)
+
+void DisplayCard(Card Card)
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    switch(PlayerHand[CardIndex].Color)
+    switch(Card.Color)
     {
         case red: SetConsoleTextAttribute(hConsole,FOREGROUND_RED); cout << "Red "; break;
         case yellow: SetConsoleTextAttribute(hConsole,14); cout << "Yellow "; break;
@@ -257,7 +282,7 @@ void DisplayCard(vector<Card> PlayerHand, int CardIndex)
                    SetConsoleTextAttribute(hConsole,FOREGROUND_GREEN); cout << "l";
                    SetConsoleTextAttribute(hConsole,FOREGROUND_BLUE); cout << "d "; break;
     }            
-    switch(PlayerHand[CardIndex].Number)
+    switch(Card.Number)
     {
         case zero : cout << "0" << endl; break;
         case one : cout << "1" << endl; break;
@@ -278,20 +303,10 @@ void DisplayCard(vector<Card> PlayerHand, int CardIndex)
     SetConsoleTextAttribute(hConsole,0);
 }
 
-void GiveRandomCard(vector<Card> &Hand, DeckManager &Deck)
+void DisplayAllCards(vector<Card> Hand)
 {
-    if (Deck.DeckCounter() == Sum)
+    for (int index = 0; index < Hand.size(); index++)
     {
-        Deck.DeckReset();
-    }
-    // 10% to get a wildcard
-    int randN = rand() % 10;
-    if(randN == 1)
-    {
-        GiveRandomWildCard(Hand, Deck);            
-    }
-    else
-    {
-        GiveRandomNormalCard(Hand, Deck);
+        DisplayCard(Hand[index]);
     }
 }

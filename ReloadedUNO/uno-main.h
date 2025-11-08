@@ -43,6 +43,7 @@ class Table
     public:
         Card topCard;
         Table();
+        void GiveInitialCards(vector<Card> &PlayerHand, DeckManager &Deck);
         int PlayCardReq(vector<Card> PlayerHand);
         bool CanPlace(Card topCard, Card PlacerHand);
         void TakeEffect(vector<Card> &PlacerHand, int index, vector<Card> &targetHand, Card &TopCard, DeckManager &Deck);
@@ -56,7 +57,8 @@ class Table
 void GiveRandomNormalCard (vector<Card> &Hand, DeckManager &Deck);
 void GiveRandomWildCard (vector<Card> &Hand, DeckManager &Deck);
 void PutRandomCard(Card &Table, DeckManager &Deck);
-void DisplayCard(vector<Card> PlayerHand, int CardIndex);
+void DisplayCard(Card Card);
+void DisplayAllCards(vector<Card> Hand);
 void GiveRandomCard(vector<Card> &Hand, DeckManager &Deck);
 
 
