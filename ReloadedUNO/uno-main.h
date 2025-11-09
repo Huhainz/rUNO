@@ -60,6 +60,8 @@ void PutRandomCard(Card &Table, DeckManager &Deck);
 void DisplayCard(Card Card);
 void DisplayAllCards(vector<Card> Hand);
 void GiveRandomCard(vector<Card> &Hand, DeckManager &Deck);
+string NumberToString(Card Card);
+void ColorToString(Card &Card);
 
 
 #endif

@@ -10,6 +10,10 @@ int main()
     PutRandomCard(Table, Deck);
     DisplayCard(Table);
     TableManager.GiveInitialCards(PlayerHand, Deck);
+    for (int i = 0; i < PlayerHand.size(); i++)
+    {
+        ColorToString(PlayerHand[i]);
+    }
     DisplayAllCards(PlayerHand);
     TableManager.PlayCard(PlayerHand, PlayerHand, Table, Deck);
     DisplayAllCards(PlayerHand);
