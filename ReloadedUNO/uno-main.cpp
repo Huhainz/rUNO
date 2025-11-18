@@ -91,14 +91,25 @@ void Table::GiveInitialCards(vector<Card> &PlayerHand, DeckManager &Deck)
 int Table::PlayCardReq(vector<Card> PlayerHand)
 {
     int index;
-    cout << "Place a card: ";
-    cin >> index;
-    while (index > (PlayerHand.size() - 1))
+    while (true)
     {
-        cout << "Index invalid." << endl << "Place a card: ";
-        cin >> index;
+        cout << "Place a card: ";
+        if (cin >> index)
+        {
+            if (index < (PlayerHand.size() - 1))
+            {
+                return index;
+                break;
+            }
+            cout << "Invalid index. Try again." << endl;
+        }
+        else
+        {
+            cin.clear();    // clear error
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');    // flush bad input
+            cout << "Please enter an index, not text." << endl;
+        }
     }
-    return index;
 }
 
 bool Table::CanPlace(Card topCard, Card PlacerCard)
@@ -192,7 +203,7 @@ void Table::PlayCard(vector<Card> &PlayerHand, vector<Card> &targetHand, Card &T
             break;
         }
     }
-  
+ 
 }
 
 // Give cards functions
