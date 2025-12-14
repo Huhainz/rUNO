@@ -96,7 +96,7 @@ int Table::PlayCardReq(vector<Card> PlayerHand)
         cout << "Place a card: ";
         if (cin >> index)
         {
-            if (index < (PlayerHand.size() - 1))
+            if (index < (PlayerHand.size()))
             {
                 return index;
                 break;
@@ -200,7 +200,7 @@ void Table::PlayCard(vector<Card> &PlayerHand, vector<Card> &targetHand, Card &T
         else
         {
             cout << "Card can't be placed" << endl;
-            break;
+            //break;
         }
     }
  
@@ -323,6 +323,7 @@ void DisplayAllCards(vector<Card> Hand)
 {
     for (int index = 0; index < Hand.size(); index++)
     {
+        cout << index << ":";
         DisplayCard(Hand[index]);
         cout << "\n";
     }
@@ -357,10 +358,10 @@ void ColorToString(Card &Card)
 {
     switch(Card.Color)
     {
-        case red: Card.Display = "+---------+\n|         |\n|   Red   |\n|   "+ NumberToString(Card)+"    |\n|         |\n+---------+ "; break;
-        case yellow: Card.Display = "+---------+\n|         |\n| Yellow  |\n|   "+ NumberToString(Card)+"    |\n|         |\n+---------+ "; break;
-        case green: Card.Display = "+---------+\n|         |\n| Green   |\n|   "+ NumberToString(Card)+"    |\n|         |\n+---------+ "; break;
-        case blue: Card.Display = "+---------+\n|         |\n|  Blue   |\n|   "+ NumberToString(Card)+"    |\n|         |\n+---------+ "; break; 
-        case wilds: Card.Display = "+---------+\n|         |\n|  Wild   |\n|   "+ NumberToString(Card)+"    |\n|         |\n+---------+ "; break;
+        case red: Card.Display = "+---------+\n  |         |\n  |   Red   |\n  |   "+ NumberToString(Card)+"    |\n  |         |\n  +---------+ "; break;
+        case yellow: Card.Display = "+---------+\n  |         |\n  | Yellow  |\n  |   "+ NumberToString(Card)+"    |\n  |         |\n  +---------+ "; break;
+        case green: Card.Display = "+---------+\n  |         |\n  | Green   |\n  |   "+ NumberToString(Card)+"    |\n  |         |\n  +---------+ "; break;
+        case blue: Card.Display = "+---------+\n  |         |\n  |  Blue   |\n  |   "+ NumberToString(Card)+"    |\n  |         |\n  +---------+ "; break; 
+        case wilds: Card.Display = "+---------+\n  |         |\n  |  Wild   |\n  |   "+ NumberToString(Card)+"    |\n  |         |\n  +---------+ "; break;
     } 
 }
